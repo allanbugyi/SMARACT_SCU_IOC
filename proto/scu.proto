@@ -1,0 +1,51 @@
+Terminator="0x0a"
+
+#---- Initialization commands ----
+I{
+	out ":I";
+	in ":%(\$1:IDENTIFICATION.VAL)#s";
+}
+
+GID{
+	out ":GID";
+	in ":%(\$1:IDNUMBER.VAL)#s";
+}
+
+V{
+	out ":V";
+	in ":%(\$1:FIRMWARE_VERSION)s";
+}
+
+R{
+	out ":R";
+}
+
+#---- Configuration commands ----
+
+setStepParameters{
+	out ":SSPS\$2A\$3";
+}
+
+#---- Movement control commands ----
+
+moveUP{
+
+}
+
+moveDown{
+
+}
+
+#---- Misc ----
+
+keepAlive{
+
+}
+
+getErrorStatus{
+
+}
+
+setBaudRate{
+
+}
