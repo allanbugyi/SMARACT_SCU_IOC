@@ -1,21 +1,23 @@
 #!../../bin/linux-x86_64/scu
 
-## You may have to change scu to something else
-## everywhere it appears in this file
-
 < envPaths
 
 cd "${TOP}"
 
+# Configure StreamDevice paths
+epicsEnvSet("STREAM_PROTOCOL_PATH", "../../proto")
+
 ## Register all support components
-dbLoadDatabase "dbd/scu.dbd"
+dbLoadDatabase ("${TOP}/dbd/scu.dbd")
 scu_registerRecordDeviceDriver pdbbase
 
+drvAsynIPPortConfigure("stt", "10.20.71.24:4001", 0, 0, 0)
+asynSetTraceMask("stt", -1, 0x9)
+asynSetTraceIOMask("stt", -1, 0x2)
+
 ## Load record instances
-#dbLoadRecords("db/xxx.db","user=allanbugyi")
+dbLoadRecords("${TOP}/db/scu.db","P=SMARACT, R=STT1, PORT=stt")
 
 cd "${TOP}/iocBoot/${IOC}"
 iocInit
 
-## Start any sequence programs
-#seq sncxxx,"user=allanbugyi"

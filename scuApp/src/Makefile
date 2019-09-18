@@ -14,12 +14,11 @@ DBD += scu.dbd
 
 # scu.dbd will be made up from these files:
 scu_DBD += base.dbd
+scu_DBD += stream.dbd
+scu_DBD += asyn.dbd
+scu_DBD += drvAsynIPPort.dbd
 
-# Include dbd files from all support applications:
-#scu_DBD += xxx.dbd
-
-# Add all the support libraries needed by this IOC
-#scu_LIBS += xxx
+scu_LIBS += asyn stream
 
 # scu_registerRecordDeviceDriver.cpp derives from scu.dbd
 scu_SRCS += scu_registerRecordDeviceDriver.cpp
@@ -27,9 +26,6 @@ scu_SRCS += scu_registerRecordDeviceDriver.cpp
 # Build the main IOC entry point on workstation OSs.
 scu_SRCS_DEFAULT += scuMain.cpp
 scu_SRCS_vxWorks += -nil-
-
-# Add support from base/src/vxWorks if needed
-#scu_OBJS_vxWorks += $(EPICS_BASE_BIN)/vxComLibrary
 
 # Finally link to the EPICS Base libraries
 scu_LIBS += $(EPICS_BASE_IOC_LIBS)

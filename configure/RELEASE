@@ -23,8 +23,9 @@
 # the CONFIG_SITE file.
 
 # Variables and paths to dependent modules:
-#MODULES = /path/to/modules
-#MYMODULE = $(MODULES)/my-module
+SUPPORT = /usr/local/epics/synApps/support
+ASYN = $(SUPPORT)/asyn-R4-33
+STREAM = $(SUPPORT)/stream-R2-7-7c
 
 # If using the sequencer, point SNCSEQ at its top directory:
 #SNCSEQ = $(MODULES)/seq-ver

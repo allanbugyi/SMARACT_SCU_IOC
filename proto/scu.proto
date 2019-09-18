@@ -1,19 +1,19 @@
-Terminator="0x0a"
+Terminator="0x0a";
 
 #---- Initialization commands ----
 I{
 	out ":I";
-	in ":%(\$1:IDENTIFICATION.VAL)#s";
+	in ":I%(\$1DEVICE_IDENTIFICATION.VAL)c";
 }
 
 GID{
 	out ":GID";
-	in ":%(\$1:IDNUMBER.VAL)#s";
+	in ":ID%(\$1ID.VAL)s";
 }
 
 V{
 	out ":V";
-	in ":%(\$1:FIRMWARE_VERSION)s";
+	in ":V%(\$1FIRMWARE_VERSION.VAL)s";
 }
 
 R{
@@ -23,29 +23,34 @@ R{
 #---- Configuration commands ----
 
 setStepParameters{
-	out ":SSPS\$2A\$3";
+	out ":SSP%(\$1CHANNEL.VAL)uS%(\$1STEPS.VAL)uA%(\$1AMPLITUDE.VAL)uF%(\$1FREQUENCY.VAL)u";
 }
 
 #---- Movement control commands ----
 
 moveUP{
-
+	out ":U%(\$1CHANNEL.VAL)uF%(\$1FREQUENCY.VAL)uA%(\$1AMPLITUDE.VAL)uS%(\$1STEPS.VAL)u";
 }
 
-moveDown{
+moveDOWN{
+	out ":D%(\$1CHANNEL.VAL)uF%(\$1FREQUENCY.VAL)uA%(\$1AMPLITUDE.VAL)uS%(\$1STEPS.VAL)u";
+}
 
+stop{
+	out ":S99";
 }
 
 #---- Misc ----
 
 keepAlive{
-
+	out ":K%(\$1TIMEOUT_KEEPALIVE.VAL)u";
 }
 
 getErrorStatus{
-
+	out ":E";
+	in "E%(\$1ERROR_CODE)s";
 }
 
 setBaudRate{
-
+	out ":CB%(\$1BAUD_RATE.VAL)u";
 }

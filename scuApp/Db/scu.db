@@ -3,69 +3,116 @@ record(stringin, "$(P)$(R)DEVICE_IDENTIFICATION"){
 	field(DESC, "Device identification")
 	field(DTYP, "stream")
 	field(SCAN, "I/O Intr")
-	field(INP, "@scu.proto ")
+	field(PINI, "NO")
+	field(INP, "@scu.proto I($(P)$(R)) $(PORT)")
 }
 
 record(stringin, "$(P)$(R)ID"){
 	field(DESC, "Device ID number")
 	field(DTYP, "stream")
 	field(SCAN, "I/O Intr")
-	field(INP, "@scu.proto ")
+	field(PINI, "NO")
+	field(INP, "@scu.proto GID($(P)$(R)) $(PORT)")
 }
 
 record(stringin, "$(P)$(R)FIRMWARE_VERSION"){
 	field(DESC, "Firmware version")
 	field(DTYP, "stream")
 	field(SCAN, "I/O Intr")
-	field(INP, "@scu.proto ")
+	field(PINI, "NO")
+	field(INP, "@scu.proto V($(P)$(R)) $(PORT)")
 }
 
-record(stringin, "$(P)$(R)DEVICE_RESET"){
+record(bo, "$(P)$(R)DEVICE_RESET"){
 	field(DESC, "Device reset")
 	field(DTYP, "stream")
-	field(SCAN, "I/O Intr")
-	field(INP, "@scu.proto ")
+	field(ZNAM, "Not reset")
+	field(ONAM, "Reset")
+	field(OUT, "@scu.proto R $(PORT)")
 }
 #--- Configuration related records ---
 record(mbbo, "$(P)$(R)CHANNEL"){
 	field(DESC, "Channel index")
-	field(DTYP, "stream")
+	field(DTYP, "Soft Channel")
 	field(ZRVL, "0")
 	field(ONVL, "1")
 	field(TWVL, "2")
 	field(ZRST, "Channel 0")
 	field(ONST, "Channel 1")
 	field(TWST, "Channel 2")
-	field(OUT, "@scu.proto ")
 }
 
 record(longout, "$(P)$(R)STEPS"){
 	field(DESC, "Number of steps 1-30000")
-	field(DTYP, "stream")
+	field(DTYP, "Soft Channel")
 	field(HOPR, "30000")
 	field(LOPR, "1")
 	field(EGU, "steps")
-	field(OUT, "@scu.proto ")
 }
 
 record(ao, "$(P)$(R)AMPLITUDE"){
 	field(DESC, "Amplitude - tenths of Volts")
-	field(DTYP, "stream")
+	field(DTYP, "Soft Channel")
 	field(EGU, "V")
 	field(LINR, "LINEAR")
 	field(ESLO, "0.1")
 	field(DRVL, "150")
 	field(DRVH, "1000")
 	field(PREC, "1")
-	field(OUT, "@scu.proto ")
 }
 
 record(ao, "$(P)$(R)FREQUENCY"){
 	field(DESC, "Frequency")
-	field(DTYP, "stream")
+	field(DTYP, "Soft Channel")
 	field(EGU, "Hz")
 	field(DRVL, "1")
 	field(DRVH, "18500")
-	field(OUT, "@scu.proto ")
 }
-#---
+
+record(bo, "$(P)$(R)SET_STEP_PARAMETERS"){
+	field(DESC, "Sets step parameters. No move")
+	field(DTYP, "stream")
+	field(OUT, "@scu.proto setStepParameters($(P)$(R)) $(PORT)")
+}
+#--- Movement control commands ---
+record(bo, "$(P)$(R)MOVEUP"){
+	field(DESC, "Move up")
+	field(DTYP, "stream")
+	field(OUT, "@scu.proto moveUP($(P)$(R)) $(PORT)")
+}
+
+record(bo, "$(P)$(R)MOVEDOWN"){
+	field(DESC, "Move down")
+	field(DTYP, "stream")
+	field(OUT, "@scu.proto moveDOWN($(P)$(R)) $(PORT)")
+}
+#--- Miscellaneous Commands ---
+record(longout, "$(P)$(R)TIMEOUT_KEEPALIVE"){
+	field(DESC, "Optional parameter to keep-alive")
+	field(DTYP, "Soft Channel")
+	field(VAL, "0")
+	field(PINI, "YES")
+	field(EGU, "ms")
+	field(LOPR, "100")
+	field(HOPR, "60000")
+}
+
+record(bo, "$(P)$(R)KEEPALIVE"){
+	field(DESC, "Keep alive for counter purposes")
+	field(DTYP, "stream")
+	field(OUT, "@scu.proto keepAlive($(P)$(R)) $(PORT)")
+}
+
+record(stringin, "$(P)$(R)ERROR_CODE"){
+	field(DESC, "Error code")
+	field(DTYP, "stream")
+	field(INP, "@scu.proto getErrorStatus($(P)$(R)) $(PORT)")
+}
+
+record(longout, "$(P)$(R)BAUD_RATE"){
+	field(DESC, "RS232 Baud rate")
+	field(DTYP, "stream")
+	field(LOPR, "9600")
+	field(HOPR, "500000")
+	field(OUT, "@scu.proto setBaudRate($(P)$(R)) $(PORT)")
+}
