@@ -2,24 +2,21 @@
 record(stringin, "$(P)$(R)DEVICE_IDENTIFICATION"){
 	field(DESC, "Device identification")
 	field(DTYP, "stream")
-	field(SCAN, "I/O Intr")
-	field(PINI, "NO")
+	field(PINI, "YES")
 	field(INP, "@scu.proto I($(P)$(R)) $(PORT)")
 }
 
 record(stringin, "$(P)$(R)ID"){
 	field(DESC, "Device ID number")
 	field(DTYP, "stream")
-	field(SCAN, "I/O Intr")
-	field(PINI, "NO")
+	field(PINI, "YES")
 	field(INP, "@scu.proto GID($(P)$(R)) $(PORT)")
 }
 
 record(stringin, "$(P)$(R)FIRMWARE_VERSION"){
 	field(DESC, "Firmware version")
 	field(DTYP, "stream")
-	field(SCAN, "I/O Intr")
-	field(PINI, "NO")
+	field(PINI, "YES")
 	field(INP, "@scu.proto V($(P)$(R)) $(PORT)")
 }
 
@@ -37,25 +34,23 @@ record(mbbo, "$(P)$(R)CHANNEL"){
 	field(ZRVL, "0")
 	field(ONVL, "1")
 	field(TWVL, "2")
-	field(ZRST, "Channel 0")
-	field(ONST, "Channel 1")
-	field(TWST, "Channel 2")
+	field(ZRST, "0")
+	field(ONST, "1")
+	field(TWST, "2")
 }
 
-record(longout, "$(P)$(R)STEPS"){
+record(ao, "$(P)$(R)STEPS"){
 	field(DESC, "Number of steps 1-30000")
 	field(DTYP, "Soft Channel")
-	field(HOPR, "30000")
-	field(LOPR, "1")
+	field(DRVH, "30000")
+	field(DRVL, "1")
 	field(EGU, "steps")
 }
 
 record(ao, "$(P)$(R)AMPLITUDE"){
 	field(DESC, "Amplitude - tenths of Volts")
-	field(DTYP, "Soft Channel")
+	field(DTYP, "Raw Soft Channel")
 	field(EGU, "V")
-	field(LINR, "LINEAR")
-	field(ESLO, "0.1")
 	field(DRVL, "150")
 	field(DRVH, "1000")
 	field(PREC, "1")
@@ -86,6 +81,13 @@ record(bo, "$(P)$(R)MOVEDOWN"){
 	field(DTYP, "stream")
 	field(OUT, "@scu.proto moveDOWN($(P)$(R)) $(PORT)")
 }
+
+record(bo, "$(P)$(R)STOP"){
+	field(DESC, "Stop movement")
+	field(DTYP, "stream")
+	field(OUT, "@scu.proto stop $(PORT)")
+}
+
 #--- Miscellaneous Commands ---
 record(longout, "$(P)$(R)TIMEOUT_KEEPALIVE"){
 	field(DESC, "Optional parameter to keep-alive")
@@ -106,6 +108,8 @@ record(bo, "$(P)$(R)KEEPALIVE"){
 record(stringin, "$(P)$(R)ERROR_CODE"){
 	field(DESC, "Error code")
 	field(DTYP, "stream")
+	field(PINI, "YES")
+	#field(SCAN, "1 second")
 	field(INP, "@scu.proto getErrorStatus($(P)$(R)) $(PORT)")
 }
 

@@ -1,9 +1,14 @@
-Terminator="0x0a";
+ReadTimeout = 100;
+PollPeriod = 100;
+ReplyTimeout = 2000;
+Terminator = LF;
 
 #---- Initialization commands ----
 I{
 	out ":I";
-	in ":I%(\$1DEVICE_IDENTIFICATION.VAL)c";
+	in ":I%(\$1DEVICE_IDENTIFICATION.VAL)#s";
+	#in "%#s"
+	#in ":I%(\$1DEVICE_IDENTIFICATION)[_a-zA-Z0-9]";
 }
 
 GID{
@@ -23,17 +28,17 @@ R{
 #---- Configuration commands ----
 
 setStepParameters{
-	out ":SSP%(\$1CHANNEL.VAL)uS%(\$1STEPS.VAL)uA%(\$1AMPLITUDE.VAL)uF%(\$1FREQUENCY.VAL)u";
+	out ":SSP%(\$1CHANNEL.VAL)uS%(\$1STEPS.VAL)uA%(\$1AMPLITUDE.RVAL)uF%(\$1FREQUENCY.VAL)u";
 }
 
 #---- Movement control commands ----
 
 moveUP{
-	out ":U%(\$1CHANNEL.VAL)uF%(\$1FREQUENCY.VAL)uA%(\$1AMPLITUDE.VAL)uS%(\$1STEPS.VAL)u";
+	out ":U%(\$1CHANNEL.VAL)uF%(\$1FREQUENCY.VAL)uA%(\$1AMPLITUDE.RVAL)uS%(\$1STEPS.VAL)u";
 }
 
 moveDOWN{
-	out ":D%(\$1CHANNEL.VAL)uF%(\$1FREQUENCY.VAL)uA%(\$1AMPLITUDE.VAL)uS%(\$1STEPS.VAL)u";
+	out ":D%(\$1CHANNEL.VAL)uF%(\$1FREQUENCY.VAL)uA%(\$1AMPLITUDE.RVAL)uS%(\$1STEPS.VAL)u";
 }
 
 stop{
@@ -48,7 +53,7 @@ keepAlive{
 
 getErrorStatus{
 	out ":E";
-	in "E%(\$1ERROR_CODE)s";
+	in ":E%(\$1ERROR_CODE)s";
 }
 
 setBaudRate{
